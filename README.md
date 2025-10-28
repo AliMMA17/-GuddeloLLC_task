@@ -3,10 +3,10 @@
 ```bash
 docker compose --env-file .env up  --build
 
-#now in another terminal 
+#now in another terminal in the same folder
 
 # Run
-python app/birthdays.py today
-python app/birthdays.py next3
-python app/birthdays.py next3workdays
+docker compose exec app ./birthdays_today.sh
+docker compose exec app ./birthdays_next3.sh
+docker compose exec app ./birthdays_next3_workdays.sh
 ```
