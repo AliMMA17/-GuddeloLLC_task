@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: pg
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-testdb}
+      POSTGRES_USER: ${POSTGRES_USER:-testuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-testpass}
+    ports:
+      - "${PGPORT:-5432}:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+
+  app:
+    build: ./app
+    container_name: birthdays-app
+    depends_on:
+      - postgres
+    environment:
+      PGHOST: postgres
+      PGPORT: 5432
+      PGUSER: ${POSTGRES_USER:-testuser}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-testpass}
+      PGDATABASE: ${POSTGRES_DB:-testdb}
+      TZ: Europe/Berlin
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    entrypoint: ["bash", "-lc", "sleep 1d"]
