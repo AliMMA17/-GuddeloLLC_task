@@ -4,9 +4,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY birthdays.py /app/birthdays.py
-COPY birthdays_today.sh /app/birthdays_today.sh
-COPY birthdays_next3.sh /app/birthdays_next3.sh
-COPY birthdays_next3_workdays.sh /app/birthdays_next3_workdays.sh
+COPY . .
 
 RUN chmod +x /app/*.sh
+EXPOSE 8000

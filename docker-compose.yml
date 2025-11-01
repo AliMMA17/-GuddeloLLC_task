@@ -1,13 +1,9 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:16
     container_name: pg
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-testdb}
-      POSTGRES_USER: ${POSTGRES_USER:-testuser}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-testpass}
+    env_file:
+      - .env
     ports:
       - "${PGPORT:-5432}:5432"
     volumes:
@@ -18,14 +14,13 @@ services:
     container_name: birthdays-app
     depends_on:
       - postgres
+    env_file:
+      - .env
     environment:
-      PGHOST: postgres
-      PGPORT: 5432
-      PGUSER: ${POSTGRES_USER:-testuser}
-      PGPASSWORD: ${POSTGRES_PASSWORD:-testpass}
-      PGDATABASE: ${POSTGRES_DB:-testdb}
-      TZ: Europe/Berlin
+      - TZ=Europe/Moscow
     volumes:
       - ./app:/app
     working_dir: /app
-    entrypoint: ["bash", "-lc", "sleep 1d"]
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
