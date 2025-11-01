@@ -1,7 +1,7 @@
 
 ## How to Run and Test
 ```bash
-docker compose --env-file .env up  --build
+docker compose up --build
 
 #now in another terminal in the same folder
 
